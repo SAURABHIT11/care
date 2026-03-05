@@ -146,6 +146,12 @@
         <i class="bi bi-folder2-open me-2"></i> Asset Management
     </a>
 </li>
+  <li class="nav-item">
+                    <a href="{{ route('admin.categories.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                        <i class="bi bi-folder me-2"></i> Category Management
+                    </a>
+                </li>
 
                 
                   
