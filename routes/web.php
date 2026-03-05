@@ -17,6 +17,8 @@ use App\Http\Controllers\Admin\ContentController;
 
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\PublicContentController;
+use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\BlogController;
 
 
 
@@ -133,5 +135,15 @@ Route::get('/coloring-pages/fill/{slug}', [PublicContentController::class, 'fill
 Route::get('/books/{slug}', [PublicContentController::class, 'showBook'])->name('books.show');
 Route::get('/download/{content}', [DownloadController::class, 'download'])
     ->name('download.content');
+Route::post('/admin/blogs/generate-prompt', [BlogController::class, 'generatePrompt'])
+    ->name('admin.blogs.generatePrompt');
+
+Route::post('/admin/blogs/generate-blog', [BlogController::class, 'generateBlogFromPrompt'])
+    ->name('admin.blogs.generateBlog');
+    
+Route::get('/admin/blogs/create', [BlogController::class, 'create'])
+    ->name('admin.blogs.create');
+    Route::post('/admin/blogs/generate-ai', [BlogController::class, 'generateBlog'])
+    ->name('admin.blogs.generate');
 
 require __DIR__.'/auth.php';
