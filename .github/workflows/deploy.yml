@@ -1,0 +1,24 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ 139.93.16.80 }}
+          username: ${{ u672340927 }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd domains/lightblue-pigeon-544679.hostingersite.com/drmb
+            git pull origin main
+            php artisan migrate --force
+            php artisan config:clear
+            php artisan cache:clear
