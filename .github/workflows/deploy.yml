@@ -17,7 +17,7 @@ jobs:
           username: ${{ u672340927 }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd domains/lightblue-pigeon-544679.hostingersite.com/drmb
+            cd domains/lightblue-pigeon-544679.hostingersite.com/care
             git pull origin main
             php artisan migrate --force
             php artisan config:clear
