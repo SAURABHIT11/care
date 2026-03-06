@@ -4,12 +4,24 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="text-dark fw-bold">AI Image Asset Library</h4>
+   <div class="d-flex justify-content-between align-items-center mb-4">
+    
+    <h4 class="text-dark fw-bold">AI Image Asset Library</h4>
+
+    <div class="d-flex gap-2">
+
+        <!-- Image Generator Button -->
         <a href="{{ route('assets.create') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg me-1"></i> Generate New Prompt
+            <i class="bi bi-plus-lg me-1"></i> Generate New Image
         </a>
+
+        <!-- Blog Generator Button -->
+        <a href="{{ route('admin.blogs.create') }}" class="btn btn-success">
+            <i class="bi bi-pencil-square me-1"></i> Create Blog
+        </a>
+
     </div>
+</div>
 
     @if(session('success'))
         <div class="alert alert-success border-0 shadow-sm">{{ session('success') }}</div>
