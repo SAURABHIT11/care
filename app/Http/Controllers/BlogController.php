@@ -179,7 +179,7 @@ public function generateBlogFromPrompt(Request $request)
 
     session()->forget(['ai_user_prompt','ai_tone','ai_word_count','ai_refined_prompt']);
 
-    return redirect()->route('admin.blogs.edit', $blog->id)
+    return redirect()->route('admin.blogs.create', $blog->id)
         ->with('success', 'AI Blog generated successfully!');
 }
 
@@ -297,7 +297,7 @@ $blog = Blog::create([
 ]);
 
 return redirect()
-    ->route('admin.blogs.edit', $blog->id)
+    ->route('admin.blogs.create', $blog->id)
     ->with('success', 'AI Blog generated successfully!');
     } catch (\Exception $e) {
         Log::critical('Blog Generation Failure', ['msg' => $e->getMessage()]);
