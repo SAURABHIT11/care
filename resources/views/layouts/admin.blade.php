@@ -57,9 +57,17 @@
         }
 
         @media (max-width: 991.98px) {
-            .sidebar { margin-left: calc(var(--sidebar-width) * -1); }
-            .content-wrapper { margin-left: 0; }
-            .sidebar.show { margin-left: 0; }
+            .sidebar {
+                margin-left: calc(var(--sidebar-width) * -1);
+            }
+
+            .content-wrapper {
+                margin-left: 0;
+            }
+
+            .sidebar.show {
+                margin-left: 0;
+            }
         }
 
         .nav-link {
@@ -68,13 +76,19 @@
             margin: 0 10px 5px 10px;
         }
 
-        .nav-link:hover, .nav-link.active {
+        .nav-link:hover,
+        .nav-link.active {
             background: rgba(255, 255, 255, 0.1);
             color: #fff;
         }
 
-        .nav-link.active { background: #0d6efd; }
-        .main-content { flex: 1; }
+        .nav-link.active {
+            background: #0d6efd;
+        }
+
+        .main-content {
+            flex: 1;
+        }
     </style>
 </head>
 
@@ -93,71 +107,76 @@
         <div class="flex-grow-1 overflow-auto pt-1">
             <ul class="nav nav-pills flex-column">
                 @can('dashboard')
-                <li class="nav-item">
-                    <a href="{{ route('dashboard') }}"
-                        class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <i class="bi bi-speedometer2 me-2"></i>
-    {{ ucfirst(auth()->user()->roles->first()->name ?? 'User') }} Dashboard
+                    <li class="nav-item">
+                        <a href="{{ route('dashboard') }}"
+                            class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <i class="bi bi-speedometer2 me-2"></i>
+                            {{ ucfirst(auth()->user()->roles->first()->name ?? 'User') }} Dashboard
 
-                    </a>
-                </li>
+                        </a>
+                    </li>
                 @endcan
                 @can('analytics')
-                <li class="nav-item">
-                    <a href="{{ route('analytics.index') }}"
-                        class="nav-link {{ request()->routeIs('analytics.*') ? 'active' : '' }}">
-                        <i class="bi bi-bar-chart-line me-2"></i> Analytics
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ route('analytics.index') }}"
+                            class="nav-link {{ request()->routeIs('analytics.*') ? 'active' : '' }}">
+                            <i class="bi bi-bar-chart-line me-2"></i> Analytics
+                        </a>
+                    </li>
                 @endcan
                 @can('user.view')
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}"
-                        class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                        <i class="bi bi-people me-2"></i> Users
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}"
+                            class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                            <i class="bi bi-people me-2"></i> Users
+                        </a>
+                    </li>
                 @endcan
                 @can('role.view')
-                <li class="nav-item">
-                    <a href="{{ route('roles.index') }}"
-                        class="nav-link {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-                        <i class="bi bi-shield-lock me-2"></i> Roles
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ route('roles.index') }}"
+                            class="nav-link {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                            <i class="bi bi-shield-lock me-2"></i> Roles
+                        </a>
+                    </li>
                 @endcan
                 @can('permission.view')
-                <li class="nav-item">
-                    <a href="{{ route('permissions.index') }}"
-                        class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}">
-                        <i class="bi bi-key me-2"></i> Permissions
-                    </a>
-                </li>
+                    <li class="nav-item">
+                        <a href="{{ route('permissions.index') }}"
+                            class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}">
+                            <i class="bi bi-key me-2"></i> Permissions
+                        </a>
+                    </li>
                 @endcan
-                 <li class="nav-item">
+                <li class="nav-item">
                     <a href="{{ route('admin.contents.index') }}"
                         class="nav-link {{ request()->routeIs('admin.contents.*') ? 'active' : '' }}">
                         <i class="bi bi-file-text me-2"></i> Content Management
                     </a>
                 </li>
                 <li class="nav-item">
-    <a href="{{ route('assets.index') }}"
-       class="nav-link {{ request()->routeIs('assets.*') ? 'active' : '' }}">
-        <i class="bi bi-folder2-open me-2"></i> Asset Management
-    </a>
-</li>
-  <li class="nav-item">
+                    <a href="{{ route('assets.index') }}"
+                        class="nav-link {{ request()->routeIs('assets.*') ? 'active' : '' }}">
+                        <i class="bi bi-folder2-open me-2"></i> Asset Management
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('admin.categories.index') }}"
                         class="nav-link {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                         <i class="bi bi-folder me-2"></i> Category Management
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('admin.sub-categories.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.sub-categories.*') ? 'active' : '' }}">
+                        <i class="bi bi-folder me-2"></i> Sub-Category Management
+                    </a>
+                </li>
 
-                
-                  
-              
-                
-                
+
+
+
+
             </ul>
         </div>
 
@@ -181,50 +200,52 @@
                 <h5 class="mb-0 fw-semibold">@yield('title')</h5>
 
                 <div class="ms-auto">
-    <div class="dropdown">
-        <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
-            data-bs-toggle="dropdown" aria-expanded="false">
-            {{-- Dynamic Avatar based on Auth User Name --}}
-            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0D6EFD&color=fff" 
-                 width="32" height="32" class="rounded-circle me-2">
-            
-            {{-- Dynamic Auth User Name --}}
-            <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
-        </a>
-        
-        <ul class="dropdown-menu dropdown-menu-end shadow border-0">
-            <li class="px-3 py-2 d-md-none border-bottom mb-2">
-                <span class="fw-bold d-block small text-muted">Signed in as</span>
-                <span class="text-dark">{{ Auth::user()->name }}</span>
-            </li>
-            
-            {{-- Profile Link --}}
-            <li>
-                <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                    <i class="bi bi-person me-2 text-primary"></i> My Profile
-                </a>
-            </li>
-            
-            {{-- Activity Logs Link (Assumes you have this route defined) --}}
-            <li>
-                <a class="dropdown-item" href="{{ route('logs.self') }}">
-                    <i class="bi bi-clock-history me-2 text-info"></i> Activity Logs
-                </a>
-            </li>
-            
-            <li><hr class="dropdown-divider"></li>
-            
-            <li>
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button class="dropdown-item text-danger border-0 bg-transparent">
-                        <i class="bi bi-box-arrow-right me-2"></i> Logout
-                    </button>
-                </form>
-            </li>
-        </ul>
-    </div>
-</div>
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            {{-- Dynamic Avatar based on Auth User Name --}}
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::user()->name) }}&background=0D6EFD&color=fff"
+                                width="32" height="32" class="rounded-circle me-2">
+
+                            {{-- Dynamic Auth User Name --}}
+                            <span class="d-none d-md-inline">{{ Auth::user()->name }}</span>
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end shadow border-0">
+                            <li class="px-3 py-2 d-md-none border-bottom mb-2">
+                                <span class="fw-bold d-block small text-muted">Signed in as</span>
+                                <span class="text-dark">{{ Auth::user()->name }}</span>
+                            </li>
+
+                            {{-- Profile Link --}}
+                            <li>
+                                <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                                    <i class="bi bi-person me-2 text-primary"></i> My Profile
+                                </a>
+                            </li>
+
+                            {{-- Activity Logs Link (Assumes you have this route defined) --}}
+                            <li>
+                                <a class="dropdown-item" href="{{ route('logs.self') }}">
+                                    <i class="bi bi-clock-history me-2 text-info"></i> Activity Logs
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button class="dropdown-item text-danger border-0 bg-transparent">
+                                        <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </nav>
 
@@ -264,4 +285,5 @@
         });
     </script>
 </body>
+
 </html>
