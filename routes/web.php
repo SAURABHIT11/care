@@ -146,4 +146,7 @@ Route::get('/admin/blogs/create', [BlogController::class, 'create'])
     Route::post('/admin/blogs/generate-ai', [BlogController::class, 'generateBlog'])
     ->name('admin.blogs.generate');
 
+    Route::get('/blog/{id}/data', [BlogController::class, 'getBlogData'])
+    ->name('blog.data');
+
 require __DIR__.'/auth.php';
