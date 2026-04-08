@@ -14,13 +14,21 @@ use Illuminate\Support\Str;
 class ContentController extends Controller
 {
     public function index()
-    {
-        $contents = Content::with(['category', 'subCategory'])
-            ->latest()
-            ->paginate(20);
+{
+    $contents = Content::with([
+            'category',
+            'subCategory',
+            'files' => function ($query) {
+                $query->where('status', 1)
+                      ->orderBy('sort_order');
+            }
+        ])
+        ->latest()
+        ->paginate(20);
 
-        return view('admin.contents.index', compact('contents'));
-    }
+
+    return view('admin.contents.index', compact('contents'));
+}
 
     public function create()
     {
@@ -42,7 +50,7 @@ class ContentController extends Controller
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'sub_category_id' => 'nullable|exists:sub_categories,id',
-            'type' => 'required|in:worksheet,coloring_page,coloring_book,game',
+            'type' => 'required|in:blog,game',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'language' => 'nullable|in:english,hindi,urdu',
@@ -128,7 +136,7 @@ if ($request->hasFile('files')) {
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'sub_category_id' => 'nullable|exists:sub_categories,id',
-            'type' => 'required|in:worksheet,coloring_page,coloring_book,game',
+            'type' => 'required|in:blog,game',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'language' => 'nullable|in:english,hindi,urdu',

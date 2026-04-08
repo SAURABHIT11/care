@@ -185,6 +185,7 @@ public function generateBlogFromPrompt(Request $request)
 
 public function generateBlog(Request $request)
 {
+   
   
     Log::info('=== Gemini Blog Generation Started ===');
 
@@ -276,6 +277,7 @@ if (!$data || !isset($data['content'])) {
     return back()->withErrors("AI failed to create valid blog JSON.");
 }
 
+
 // STEP 4: Store Blog
 $blog = Blog::create([
     'title' => $data['title'] ?? 'Untitled',
@@ -289,7 +291,7 @@ $blog = Blog::create([
     'meta_description' => $data['meta_description'] ?? null,
     'category_id' => $request->category_id,
     'status' => $request->status,
-    'published_at' => $request->status === 'published' ? now() : null,
+    'published_at' => $request->status ==='published' ? now() : null,
     'ai_model' => 'gemini-1.5-pro',
     'temperature' => 0.7,
     'is_ai_generated' => true,
@@ -303,5 +305,22 @@ return redirect()
         Log::critical('Blog Generation Failure', ['msg' => $e->getMessage()]);
         return back()->withErrors("System Error: " . $e->getMessage());
     }
+}
+public function getBlogData($id)
+{
+    $blog = Blog::with('category')->findOrFail($id);
+
+    // ✅ Increment views
+    $blog->increment('views');
+
+    return response()->json([
+        'title' => $blog->title,
+        'content' => $blog->content,
+        'image' => $blog->featured_image 
+            ? asset('storage/' . $blog->featured_image) 
+            : null,
+        'date' => optional($blog->published_at)->format('d M Y'),
+        'views' => number_format($blog->views)
+    ]);
 }
 }
