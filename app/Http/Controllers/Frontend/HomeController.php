@@ -41,11 +41,20 @@ public function index()
         ->take(6)
         ->get();
 
+         // 🔥 NEW: Recipes (IMPORTANT)
+    $recipes = Content::with(['files'])
+        ->where('type', 'recipes')
+        ->where('status', 1)
+        ->latest()
+        ->take(8)
+        ->get();
+
     return view('home', compact(
         'categories',
         'latestContents',
         'stats',
-        'blogs' // 🔥 IMPORTANT
+        'blogs',
+        'recipes'
     ));
 }
 }

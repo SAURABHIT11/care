@@ -14,21 +14,21 @@ use Illuminate\Support\Str;
 class ContentController extends Controller
 {
     public function index()
-{
-    $contents = Content::with([
+    {
+        $contents = Content::with([
             'category',
             'subCategory',
             'files' => function ($query) {
                 $query->where('status', 1)
-                      ->orderBy('sort_order');
+                    ->orderBy('sort_order');
             }
         ])
-        ->latest()
-        ->paginate(20);
+            ->latest()
+            ->paginate(20);
 
 
-    return view('admin.contents.index', compact('contents'));
-}
+        return view('admin.contents.index', compact('contents'));
+    }
 
     public function create()
     {
@@ -50,7 +50,7 @@ class ContentController extends Controller
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'sub_category_id' => 'nullable|exists:sub_categories,id',
-            'type' => 'required|in:blog,game',
+            'type' => 'required|in:blog,recipes',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'language' => 'nullable|in:english,hindi,urdu',
@@ -61,9 +61,9 @@ class ContentController extends Controller
             'status' => 'nullable|boolean',
             'age_groups' => 'nullable|array',
             'tags' => 'nullable|array',
-              // ✅ NEW
-    'files' => 'nullable|array',
-    'files.*' => 'file|max:20480|mimes:pdf,jpg,jpeg,png,mp4',
+            // ✅ NEW
+            'files' => 'nullable|array',
+            'files.*' => 'file|max:20480|mimes:pdf,jpg,jpeg,png,mp4',
         ]);
 
         $content = Content::create([
@@ -80,20 +80,20 @@ class ContentController extends Controller
             'is_featured' => $request->is_featured ?? 0,
             'status' => $request->status ?? 1,
         ]);
-// ✅ upload files
-if ($request->hasFile('files')) {
-    foreach ($request->file('files') as $uploadedFile) {
+        // ✅ upload files
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $uploadedFile) {
 
-        $path = $uploadedFile->store('contents/' . $content->id, 'public');
+                $path = $uploadedFile->store('contents/' . $content->id, 'public');
 
-        $content->files()->create([
-            'file_path' => $path,
-            'original_name' => $uploadedFile->getClientOriginalName(),
-            'file_type' => $uploadedFile->getClientMimeType(),
-            'file_size_kb' => round($uploadedFile->getSize() / 1024, 2),
-        ]);
-    }
-}
+                $content->files()->create([
+                    'file_path' => $path,
+                    'original_name' => $uploadedFile->getClientOriginalName(),
+                    'file_type' => $uploadedFile->getClientMimeType(),
+                    'file_size_kb' => round($uploadedFile->getSize() / 1024, 2),
+                ]);
+            }
+        }
         // attach age groups
         if ($request->age_groups) {
             $content->ageGroups()->sync($request->age_groups);
@@ -136,7 +136,7 @@ if ($request->hasFile('files')) {
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'sub_category_id' => 'nullable|exists:sub_categories,id',
-            'type' => 'required|in:blog,game',
+            'type' => 'required|in:blog,recipes',
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
             'language' => 'nullable|in:english,hindi,urdu',
@@ -148,7 +148,7 @@ if ($request->hasFile('files')) {
             'age_groups' => 'nullable|array',
             'tags' => 'nullable|array',
             'files' => 'nullable|array',
-'files.*' => 'file|max:20480|mimes:pdf,jpg,jpeg,png,mp4',
+            'files.*' => 'file|max:20480|mimes:pdf,jpg,jpeg,png,mp4',
 
         ]);
 
@@ -166,20 +166,20 @@ if ($request->hasFile('files')) {
             'is_featured' => $request->is_featured ?? 0,
             'status' => $request->status ?? 1,
         ]);
-// ✅ upload new files
-if ($request->hasFile('files')) {
-    foreach ($request->file('files') as $uploadedFile) {
+        // ✅ upload new files
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $uploadedFile) {
 
-        $path = $uploadedFile->store('contents/' . $content->id, 'public');
+                $path = $uploadedFile->store('contents/' . $content->id, 'public');
 
-        $content->files()->create([
-            'file_path' => $path,
-            'original_name' => $uploadedFile->getClientOriginalName(),
-            'file_type' => $uploadedFile->getClientMimeType(),
-            'file_size_kb' => round($uploadedFile->getSize() / 1024, 2),
-        ]);
-    }
-}
+                $content->files()->create([
+                    'file_path' => $path,
+                    'original_name' => $uploadedFile->getClientOriginalName(),
+                    'file_type' => $uploadedFile->getClientMimeType(),
+                    'file_size_kb' => round($uploadedFile->getSize() / 1024, 2),
+                ]);
+            }
+        }
 
         $content->ageGroups()->sync($request->age_groups ?? []);
         $content->tags()->sync($request->tags ?? []);
@@ -191,5 +191,29 @@ if ($request->hasFile('files')) {
     {
         $content->delete();
         return redirect()->route('admin.contents.index')->with('success', 'Content deleted!');
+    }
+    public function recipes()
+    {
+        $recipes = Content::with('files')
+            ->where('type', 'recipes')
+            ->where('status', 1)
+            ->paginate(12);
+
+        return view('recipes.index', compact('recipes'));
+    }
+    public function getRecipeData($id)
+    {
+        $recipe = Content::with('files')->findOrFail($id);
+
+        // get image
+        $image = $recipe->files->first(function ($file) {
+            return str_starts_with($file->file_type, 'image');
+        });
+
+        return response()->json([
+            'title' => $recipe->title,
+            'content' => $recipe->description, // or full content if you have
+            'image' => $image ? asset('storage/' . $image->file_path) : null
+        ]);
     }
 }

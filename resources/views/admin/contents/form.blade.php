@@ -72,7 +72,7 @@
 
         <select name="type" class="form-select @error('type') is-invalid @enderror" required>
             <option value="">-- Select Type --</option>
-            @foreach(['blog','game'] as $type)
+            @foreach(['blog','recipes'] as $type)
                 <option value="{{ $type }}"
                     {{ old('type', $content->type ?? '') == $type ? 'selected' : '' }}
                 >
