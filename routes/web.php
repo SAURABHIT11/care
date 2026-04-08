@@ -149,4 +149,8 @@ Route::get('/admin/blogs/create', [BlogController::class, 'create'])
     Route::get('/blog/{id}/data', [BlogController::class, 'getBlogData'])
     ->name('blog.data');
 
+    Route::get('/recipes', [ContentController::class, 'recipes'])->name('recipes.index');
+    Route::get('/recipe/{id}/data', [ContentController::class, 'getRecipeData'])
+    ->name('recipe.data');
+
 require __DIR__.'/auth.php';
